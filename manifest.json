@@ -1,0 +1,28 @@
+{
+  "manifest_version": 2,
+  "name": "ShowCode",
+  "version": "1.0",
+  "default_locale": "en",
+  "description": "Chrome Extension for showing you the style code at ease.",
+  "icons": {
+      "16": "AppIcon.png"
+  },
+
+  "browser_action": {
+    "default_icon": "AppIcon.png",
+    "default_title": "Show Code"
+  },
+
+  "author": "Rick Yip",
+  "background": {
+    "persistent": false
+  },
+  "content_scripts": [{
+      "all_frames": true,
+      "js": ["content.js"]
+  }],
+  "devtools_page": "devtools.html",
+  "offline_enabled": true,
+  "permissions": ["activeTab"],
+  "short_name": "Show Code",
+}
