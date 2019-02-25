@@ -5,7 +5,7 @@ var darkmode = true;
 var isActivated = true;
 
 (function () {
-    makeTooltipElement();
+    makeDomElement();
 })();
 
 
@@ -16,7 +16,7 @@ if(isActivated){
     
         timer = window.setTimeout(function () {
             showCode(elementMouseIsOver, x, y);
-        }, 2000);
+        }, 2000);                                                                                     
     });
 
     document.addEventListener('mouseout', function (e) {
@@ -27,24 +27,38 @@ if(isActivated){
     });
 }
 
-function makeTooltipElement() {
+function makeDomElement() {
+    var container = document.createElement('span');
+    container.id = "showcode-container";
+    container.style.display = "inline-block";
+    container.style.margin = "0";
+
     var span = document.createElement('span');
     span.id = "display-span";
     span.style.display = "none";
-    document.body.parentElement.insertBefore(span, document.body);
+    container.appendChild(span);
+
+    document.body.parentElement.insertBefore(container, document.body);
 }
 
 function showCode(dom, x, y) {
     console.log("Show");
 
     var displayDom = document.getElementById("display-span");
+    var savecode =  document.getElementById('saved-code-panel');
+
+    if(!tooltipMode){ 
+        if(displayDom.innerHTML != "" && savecode != null){
+            savecode.innerHTML = displayDom.innerHTML;
+        }
+    }
     displayDom.innerHTML = getBasicCSSText(dom);
     displayDom.style.display = "block";
     displayDom.style.overflow = "hidden";
     displayDom.style.backgroundColor = "#313235";
     displayDom.style.color = "white";
     displayDom.style.padding = "7px";
-    displayDom.style.fontSize = "7px";
+    displayDom.style.fontSize = "10px";
     displayDom.style.fontFamily = "Menlo, Consolas, DejaVu Sans Mono, monospace";
     displayDom.style.opacity = "1";
     displayDom.style.transition = "all 0.3s ease-in-out";
@@ -53,12 +67,39 @@ function showCode(dom, x, y) {
     displayDom.style.wordBreak = "normal";
     displayDom.style.zIndex = "9999";
 
+    if(!tooltipMode){ 
+        if (typeof(savecode) == 'undefined' || savecode == null){
+            var savecodedom = document.createElement('span');
+            savecodedom.id = "saved-code-panel";
+            savecodedom.style.display = "block";
+            savecodedom.style.overflow = "hidden";
+            savecodedom.style.backgroundColor = "#313235";
+            savecodedom.style.color = "white";
+            savecodedom.style.padding = "7px";
+            savecodedom.style.fontSize = "10px";
+            savecodedom.style.fontFamily = "Menlo, Consolas, DejaVu Sans Mono, monospace";
+            savecodedom.style.opacity = "1";
+            savecodedom.style.transition = "all 0.3s ease-in-out";
+            savecodedom.style.wordWrap = "break-word";
+            savecodedom.style.whiteSpace = "pre-wrap";
+            savecodedom.style.wordBreak = "normal";
+            savecodedom.style.zIndex = "9999";
+
+            var container = document.getElementById("showcode-container");
+            container.style.display = "grid";
+            container.style.gridTemplateColumns = "auto auto";
+            container.gridgap = "2px";
+            container.appendChild(savecodedom);
+        }
+    }
+
     if(tooltipMode){
         displayDom.style.borderLeft = "6px solid ";
         displayDom.style.position = "fixed";
         displayDom.style.top = (y + 20) + 'px';
         displayDom.style.left = (x + 20) + 'px';
     } else {
+
         displayDom.style.top = '0px';
         displayDom.style.left = '0px';
     }
