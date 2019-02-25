@@ -36,6 +36,8 @@ function makeDomElement() {
     var span = document.createElement('span');
     span.id = "display-span";
     span.style.display = "none";
+    setDisplayElementsStyle(span)
+
     container.appendChild(span);
 
     document.body.parentElement.insertBefore(container, document.body);
@@ -54,47 +56,27 @@ function showCode(dom, x, y) {
     }
     displayDom.innerHTML = getBasicCSSText(dom);
     displayDom.style.display = "block";
-    displayDom.style.overflow = "hidden";
-    displayDom.style.backgroundColor = "#313235";
-    displayDom.style.color = "white";
-    displayDom.style.padding = "7px";
-    displayDom.style.fontSize = "10px";
-    displayDom.style.fontFamily = "Menlo, Consolas, DejaVu Sans Mono, monospace";
-    displayDom.style.opacity = "1";
-    displayDom.style.transition = "all 0.3s ease-in-out";
-    displayDom.style.wordWrap = "break-word";
-    displayDom.style.whiteSpace = "pre-wrap";
-    displayDom.style.wordBreak = "normal";
-    displayDom.style.zIndex = "9999";
 
     if(!tooltipMode){ 
         if (typeof(savecode) == 'undefined' || savecode == null){
             var savecodedom = document.createElement('span');
             savecodedom.id = "saved-code-panel";
             savecodedom.style.display = "block";
-            savecodedom.style.overflow = "hidden";
-            savecodedom.style.backgroundColor = "#313235";
-            savecodedom.style.color = "white";
-            savecodedom.style.padding = "7px";
-            savecodedom.style.fontSize = "10px";
-            savecodedom.style.fontFamily = "Menlo, Consolas, DejaVu Sans Mono, monospace";
-            savecodedom.style.opacity = "1";
-            savecodedom.style.transition = "all 0.3s ease-in-out";
-            savecodedom.style.wordWrap = "break-word";
-            savecodedom.style.whiteSpace = "pre-wrap";
-            savecodedom.style.wordBreak = "normal";
-            savecodedom.style.zIndex = "9999";
+            
+            setDisplayElementsStyle(savecodedom)
+            savecodedom.style.border = "2px solid #461b7e";
 
             var container = document.getElementById("showcode-container");
             container.style.display = "grid";
             container.style.gridTemplateColumns = "auto auto";
             container.gridgap = "2px";
+
             container.appendChild(savecodedom);
         }
     }
 
     if(tooltipMode){
-        displayDom.style.borderLeft = "6px solid ";
+        displayDom.style.borderLeft = "6px solid green";
         displayDom.style.position = "fixed";
         displayDom.style.top = (y + 20) + 'px';
         displayDom.style.left = (x + 20) + 'px';
@@ -106,6 +88,7 @@ function showCode(dom, x, y) {
 }
 
 function getBasicCSSText(element) {
+    // flexibility to let user choose
     var string = '';
     string += "Id:" + element.id;
     string += "\nClass:" + element.className;
@@ -166,3 +149,17 @@ function whiteListProcess(){
    
 }
 
+function setDisplayElementsStyle(span) {
+    span.style.overflow = "hidden";
+    span.style.backgroundColor = "#313235";
+    span.style.color = "white";
+    span.style.padding = "7px";
+    span.style.fontSize = "10px";
+    span.style.fontFamily = "Menlo, Consolas, DejaVu Sans Mono, monospace";
+    span.style.opacity = "1";
+    span.style.transition = "all 0.3s ease-in-out";
+    span.style.wordWrap = "break-word";
+    span.style.whiteSpace = "pre-wrap";
+    span.style.wordBreak = "normal";
+    span.style.zIndex = "9999";
+}
