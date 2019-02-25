@@ -8,7 +8,8 @@
     },
     "browser_action": {
         "default_icon": "AppIcon.png",
-        "default_title": "Show Code"
+        "default_title": "Show Code",
+        "default_popup": "index.html"
     },
     "author": "Rick Yip",
     "content_scripts": [
@@ -34,7 +35,8 @@
     "permissions": [
         "tabs",
         "<all_urls>",
-        "storage"
+        "storage",
+        "contextMenus"
     ],
     "short_name": "Show Code"
 }

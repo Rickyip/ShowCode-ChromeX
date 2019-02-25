@@ -1,54 +1,67 @@
 var currentElement = null;
 var timer;
+var tooltipMode = false;
+var darkmode = true;
+var isActivated = true;
 
 (function () {
     makeTooltipElement();
 })();
 
-document.addEventListener('mouseover', function (e) {
-    var x = e.clientX, y = e.clientY;
-    var elementMouseIsOver = document.elementFromPoint(x, y);
 
-    timer = window.setTimeout(function () {
-        showCode(elementMouseIsOver, x, y);
-    }, 2000);
-});
+if(isActivated){
+    document.addEventListener('mouseover', function (e) {
+        var x = e.clientX, y = e.clientY;
+        var elementMouseIsOver = document.elementFromPoint(x, y);
+    
+        timer = window.setTimeout(function () {
+            showCode(elementMouseIsOver, x, y);
+        }, 2000);
+    });
 
-document.addEventListener('mouseout', function (e) {
-    window.clearTimeout(timer);
-    hideCode();
-});
+    document.addEventListener('mouseout', function (e) {
+        window.clearTimeout(timer);
+        if(isActivated && tooltipMode){
+            hideCode();
+        }
+    });
+}
 
 function makeTooltipElement() {
     var span = document.createElement('span');
-    span.id = "tooltip-span";
+    span.id = "display-span";
     span.style.display = "none";
-    document.body.appendChild(span);
+    document.body.parentElement.insertBefore(span, document.body);
 }
 
 function showCode(dom, x, y) {
     console.log("Show");
 
-    var tooltip = document.getElementById("tooltip-span");
-    tooltip.innerHTML = getBasicCSSText(dom);
-    tooltip.style.display = "block";
-    tooltip.style.position = "fixed";
-    tooltip.style.overflow = "hidden";
-    tooltip.style.backgroundColor = "#313235";
-    tooltip.style.color = "white";
-    tooltip.style.padding = "7px";
-    tooltip.style.fontSize = "7px";
-    tooltip.style.fontFamily = "Menlo, Consolas, DejaVu Sans Mono, monospace";
-    tooltip.style.opacity = "1";
-    tooltip.style.borderLeft = "6px solid ";
-    tooltip.style.transition = "all 0.3s ease-in-out";
-    tooltip.style.wordWrap = "break-word";
-    tooltip.style.whiteSpace = "pre-wrap";
-    tooltip.style.wordBreak = "normal";
-    tooltip.style.zIndex = "9999";
+    var displayDom = document.getElementById("display-span");
+    displayDom.innerHTML = getBasicCSSText(dom);
+    displayDom.style.display = "block";
+    displayDom.style.overflow = "hidden";
+    displayDom.style.backgroundColor = "#313235";
+    displayDom.style.color = "white";
+    displayDom.style.padding = "7px";
+    displayDom.style.fontSize = "7px";
+    displayDom.style.fontFamily = "Menlo, Consolas, DejaVu Sans Mono, monospace";
+    displayDom.style.opacity = "1";
+    displayDom.style.transition = "all 0.3s ease-in-out";
+    displayDom.style.wordWrap = "break-word";
+    displayDom.style.whiteSpace = "pre-wrap";
+    displayDom.style.wordBreak = "normal";
+    displayDom.style.zIndex = "9999";
 
-    tooltip.style.top = (y + 20) + 'px';
-    tooltip.style.left = (x + 20) + 'px';
+    if(tooltipMode){
+        displayDom.style.borderLeft = "6px solid ";
+        displayDom.style.position = "fixed";
+        displayDom.style.top = (y + 20) + 'px';
+        displayDom.style.left = (x + 20) + 'px';
+    } else {
+        displayDom.style.top = '0px';
+        displayDom.style.left = '0px';
+    }
 }
 
 function getBasicCSSText(element) {
@@ -85,11 +98,30 @@ function lineFactory(title, value){
 
 function hideCode() {
     console.log("Hide");
-    var tooltip = document.getElementById("tooltip-span");
-    tooltip.innerText = '';
-    tooltip.style.display = "none";
+    var displayDom = document.getElementById("display-span");
+    displayDom.innerText = '';
+    displayDom.style.display = "none";
 }
 
 function whiteListProcess(){
-    var currentDomain = document.domain;
+    var currentDomain = {};
+    currentDomain.domain = document.domain;
+      // Get a value saved in a form.
+    var theValue = textarea.value;
+    // Check that there's some code there.
+    if (!theValue) {
+        message('Error: No value specified');
+        return;
+    }
+    chrome.storage.local.get('whiteList', function (result) {
+        var whiteList = result.whiteList;
+        whiteList.push(currentDomain);
+        // Save it using the Chrome extension storage API.
+        chrome.storage.sync.set({'whiteList': whiteList}, function() {
+            // Notify that we saved.
+            message('Settings saved');
+        });
+    });
+   
 }
+
