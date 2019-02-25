@@ -53,7 +53,7 @@ function showCode(dom, x, y) {
 
 function getBasicCSSText(element) {
     var string = '';
-    string += "Element id:" + element.id;
+    string += "Id:" + element.id;
     string += "\nClass:" + element.className;
     string += "\ndisplay:" + window.getComputedStyle(element).display;
     string += "\nposition:" + window.getComputedStyle(element).position;
@@ -66,18 +66,21 @@ function getBasicCSSText(element) {
     if(font.length > 35 ){
         font = font.substring(0,32)+"...";
     }
-    string += "\nfontFamily:" + font;
-    string += "\nlineHeight:" + window.getComputedStyle(element).lineHeight;
-    string += "\nfontSize:" + window.getComputedStyle(element).fontSize;
-    string += "\nfontWeight:" + window.getComputedStyle(element).fontWeight;
-    string += "\ncolor:" + window.getComputedStyle(element).color;
-    string += "\ncssFloat:" + window.getComputedStyle(element).cssFloat;
-    string += "\nzIndex:" + window.getComputedStyle(element).zIndex;
+    string += "\nFont Family:" + font;
+    string += "\nLine Height:" + window.getComputedStyle(element).lineHeight;
+    string += "\nFont Size:" + window.getComputedStyle(element).fontSize;
+    string += "\nFont Weight:" + window.getComputedStyle(element).fontWeight;
+    string += "\nColor:" + window.getComputedStyle(element).color;
+    string += "\nText Align:" + window.getComputedStyle(element).textAlign;
+    string += "\nVertical Align:" + window.getComputedStyle(element).verticalAlign;
+    string += "\nLine Height:" + window.getComputedStyle(element).lineHeight;
+    string += "\nCssFloat:" + window.getComputedStyle(element).cssFloat;
+    string += "\nZ-Index:" + window.getComputedStyle(element).zIndex;
     return string;
 }
 
 function lineFactory(title, value){
-    return "<span class='title' style:''"
+    return "<span class='showCodeXTitle' style:''>title</span>: <span class='showCodeXValue' style:''>value";
 }
 
 function hideCode() {
@@ -85,4 +88,8 @@ function hideCode() {
     var tooltip = document.getElementById("tooltip-span");
     tooltip.innerText = '';
     tooltip.style.display = "none";
+}
+
+function whiteListProcess(){
+    var currentDomain = document.domain;
 }

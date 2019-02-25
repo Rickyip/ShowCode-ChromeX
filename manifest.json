@@ -33,7 +33,8 @@
     "offline_enabled": true,
     "permissions": [
         "tabs",
-        "<all_urls>"
+        "<all_urls>",
+        "storage"
     ],
     "short_name": "Show Code"
 }
