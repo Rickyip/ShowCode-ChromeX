@@ -97,6 +97,13 @@
       //   console.log("Clicked");
       //   alert("");
       // });
+
+
+      // Reference:
+      // https://stackoverflow.com/questions/40645538/communicate-data-from-popup-to-content-script-injected-by-popup-with-executescri/40666096
+
+
+
       browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
         console.log('CLICKED');
       });
