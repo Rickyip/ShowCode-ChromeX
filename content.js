@@ -8,9 +8,20 @@ var isActivated = true;
     makeDomElement();
 })();
 
+var temp;
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse){
+        console.log(request);
+        temp="123";
+        alert();
+        sendResponse({"message":"received"});
+    }
+);
+
 
 if(isActivated){
     document.addEventListener('mouseover', function (e) {
+        console.log(temp);
         var x = e.clientX, y = e.clientY;
         var elementMouseIsOver = document.elementFromPoint(x, y);
     
@@ -33,13 +44,20 @@ function makeDomElement() {
     container.id = "showcode-container";
     container.style.display = "inline-block";
     container.style.margin = "0";
-
+    if(!tooltipMode){
+        container.style.overflowY= "scroll";
+        container.style.backgroundColor= "black";
+        container.style.height = "218px";
+        container.style.width = "100%";
+    }
+    
     var span = document.createElement('span');
     span.id = "display-span";
     span.style.display = "none";
     setDisplayElementsStyle(span)
 
     container.appendChild(span);
+    container.innerHTML += '<style>.showCodeXValue{ color: #66d9ee;}.showCodeXTitle{ color: #ae81ff;}</style>';
 
     document.body.parentElement.insertBefore(container, document.body);
 }
@@ -69,7 +87,7 @@ function showCode(dom, x, y) {
             savecodedom.style.display = "block";
             
             setDisplayElementsStyle(savecodedom)
-            savecodedom.style.border = "2px solid #461b7e";
+            savecodedom.style.border = "2px solid white";
             savecodedom.innerHTML = getLockHTML();
 
             var container = document.getElementById("showcode-container");
@@ -100,7 +118,7 @@ function getBasicCSSText(element) {
     string += "\nClass:" + element.className;
     string += lineFactory(true, "display", window.getComputedStyle(element).display);
     string += lineFactory(true, "position", window.getComputedStyle(element).position);
-    string += lineFactory(true, "backgroundColor", window.getComputedStyle(element).backgroundColor);
+    string += lineFactory(true, "background-color", window.getComputedStyle(element).backgroundColor);
     string += lineFactory(true, "margin", window.getComputedStyle(element).margin);
     string += lineFactory(true, "padding", window.getComputedStyle(element).padding);
     string += lineFactory(true, "height", window.getComputedStyle(element).margheightin);
@@ -109,22 +127,21 @@ function getBasicCSSText(element) {
     if(font.length > 35 ){
         font = font.substring(0,32)+"...";
     }
-    string += "\nFont Family:" + font;
-    string += lineFactory(true, "lineHeight", window.getComputedStyle(element).lineHeight);
-    string += lineFactory(true, "fontSize", window.getComputedStyle(element).fontSize);
-    string += lineFactory(true, "fontWeight", window.getComputedStyle(element).fontWeight);
+    string += lineFactory(true, "Font Family", font);
+    string += lineFactory(true, "line-height", window.getComputedStyle(element).lineHeight);
+    string += lineFactory(true, "font-size", window.getComputedStyle(element).fontSize);
+    string += lineFactory(true, "font-weight", window.getComputedStyle(element).fontWeight);
     string += lineFactory(true, "color", window.getComputedStyle(element).color);
-    string += lineFactory(true, "textAlign", window.getComputedStyle(element).textAlign);
-    string += lineFactory(true, "verticalAlign", window.getComputedStyle(element).verticalAlign);
-    string += lineFactory(true, "lineHeight", window.getComputedStyle(element).lineHeight);
-    string += lineFactory(true, "cssFloat", window.getComputedStyle(element).cssFloat);
-    string += lineFactory(true, "zIndex", window.getComputedStyle(element).zIndex);
+    string += lineFactory(true, "text-align", window.getComputedStyle(element).textAlign);
+    string += lineFactory(true, "vertical-align", window.getComputedStyle(element).verticalAlign);
+    string += lineFactory(true, "float", window.getComputedStyle(element).cssFloat);
+    string += lineFactory(true, "z-index", window.getComputedStyle(element).zIndex);
     return string;
 }
 
 function lineFactory(newline, title, value){
     var newlineChar = newline ? "<br>" : "";
-    return newlineChar+"<span class='showCodeXTitle' style:''>"+title+"</span>: <span class='showCodeXValue' style:''>"+value+"</span>";
+    return newlineChar+"<span class='showCodeXTitle' style:''>"+title+"</span>: <span class='showCodeXValue' style:''>"+value+";</span>";
 }
 
 function hideCode() {

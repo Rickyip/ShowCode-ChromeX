@@ -1,6 +1,6 @@
 <html>
   <head>
-    <style>
+    <style>                                                                                                                                    
       input[type="checkbox"] {
         height: 0;
         width: 0;
@@ -77,20 +77,40 @@
     <div id="app">
         <div class="row">
             <span class="row-item">Activate</span>
-            <span class="row-item right" ><input type="checkbox" id="switch1" /><label id="activation" for="switch1" ></label>
-            </span>
+            <span class="row-item right" ><input type="checkbox" id="switch1" onchange="onActivationClick(this)"/><label id="activation" for="switch1"></label></span>
         </div>
         <div class="row">
             <span class="row-item">Tooltip/Panel mode</span>
-            <span class="row-item right" ><input type="checkbox" id="switch2" /><label id="tooltip" for="switch2" ></label>
-            </span>
+            <span class="row-item right" ><input type="checkbox" id="switch2" /><label id="tooltip" for="switch2" ></label></span>
         </div>
         <div class="row">
             <span class="row-item">Dark mode</span>
-            <span class="row-item right" ><input type="checkbox" id="switch3" /><label id="darkmode" for="switch3" ></label>
-            </span>
+            <span class="row-item right" ><input type="checkbox" id="switch3" /><label id="darkmode" for="switch3" ></label></span>
         </div>
+        
+        <div class="row"><button type="button" onclick="onActivationClick(null)">Click Me!</button></div>
     </div>
   </body>
-  <script></script>
+  <script>
+    function onActivationClick(checkbox){
+      // chrome.extension.sendMessage({activated: true}, function (response) {
+      //   console.log("Clicked");
+      //   alert("");
+      // });
+      browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+        console.log('CLICKED');
+      });
+      // console.log("onchange");
+      // chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
+      //   chrome.tabs.sendMessage(tabs[0].id, {"message": "g"}, function (response){
+      //     console.log(response);
+      //   });
+      // });
+      // var port = chrome.runtime.connect();
+      // port.postMessage("123");
+      // console.log("Clicked");
+      // chrome.runtime.sendMessage({"message": "g"});
+      
+    }
+  </script>
 </html>
