@@ -28,6 +28,7 @@ if(isActivated){
 }
 
 function makeDomElement() {
+    // TODO make the elements at start for panel mode
     var container = document.createElement('span');
     container.id = "showcode-container";
     container.style.display = "inline-block";
@@ -50,8 +51,12 @@ function showCode(dom, x, y) {
     var savecode =  document.getElementById('saved-code-panel');
 
     if(!tooltipMode){ 
-        if(displayDom.innerHTML != "" && savecode != null){
-            savecode.innerHTML = displayDom.innerHTML;
+        var lock = document.getElementById("lock-switch");
+        if(displayDom.innerHTML != "" && savecode != null && lock != null){
+            if(!lock.checked){
+                savecode.innerHTML = displayDom.innerHTML;
+                savecode.innerHTML += getLockHTML();
+            }
         }
     }
     displayDom.innerHTML = getBasicCSSText(dom);
@@ -65,6 +70,7 @@ function showCode(dom, x, y) {
             
             setDisplayElementsStyle(savecodedom)
             savecodedom.style.border = "2px solid #461b7e";
+            savecodedom.innerHTML = getLockHTML();
 
             var container = document.getElementById("showcode-container");
             container.style.display = "grid";
@@ -88,36 +94,37 @@ function showCode(dom, x, y) {
 }
 
 function getBasicCSSText(element) {
-    // flexibility to let user choose
+    // TODO flexibility to let user choose
     var string = '';
     string += "Id:" + element.id;
     string += "\nClass:" + element.className;
-    string += "\ndisplay:" + window.getComputedStyle(element).display;
-    string += "\nposition:" + window.getComputedStyle(element).position;
-    string += "\nbg-color:" + window.getComputedStyle(element).backgroundColor;
-    string += "\nmargin:" + window.getComputedStyle(element).margin;
-    string += "\npadding:" + window.getComputedStyle(element).padding;
-    string += "\nheight:" + window.getComputedStyle(element).height;
-    string += "\nwidth:" + window.getComputedStyle(element).width;
+    string += lineFactory(true, "display", window.getComputedStyle(element).display);
+    string += lineFactory(true, "position", window.getComputedStyle(element).position);
+    string += lineFactory(true, "backgroundColor", window.getComputedStyle(element).backgroundColor);
+    string += lineFactory(true, "margin", window.getComputedStyle(element).margin);
+    string += lineFactory(true, "padding", window.getComputedStyle(element).padding);
+    string += lineFactory(true, "height", window.getComputedStyle(element).margheightin);
+    string += lineFactory(true, "width", window.getComputedStyle(element).width);
     var font = window.getComputedStyle(element).fontFamily;
     if(font.length > 35 ){
         font = font.substring(0,32)+"...";
     }
     string += "\nFont Family:" + font;
-    string += "\nLine Height:" + window.getComputedStyle(element).lineHeight;
-    string += "\nFont Size:" + window.getComputedStyle(element).fontSize;
-    string += "\nFont Weight:" + window.getComputedStyle(element).fontWeight;
-    string += "\nColor:" + window.getComputedStyle(element).color;
-    string += "\nText Align:" + window.getComputedStyle(element).textAlign;
-    string += "\nVertical Align:" + window.getComputedStyle(element).verticalAlign;
-    string += "\nLine Height:" + window.getComputedStyle(element).lineHeight;
-    string += "\nCssFloat:" + window.getComputedStyle(element).cssFloat;
-    string += "\nZ-Index:" + window.getComputedStyle(element).zIndex;
+    string += lineFactory(true, "lineHeight", window.getComputedStyle(element).lineHeight);
+    string += lineFactory(true, "fontSize", window.getComputedStyle(element).fontSize);
+    string += lineFactory(true, "fontWeight", window.getComputedStyle(element).fontWeight);
+    string += lineFactory(true, "color", window.getComputedStyle(element).color);
+    string += lineFactory(true, "textAlign", window.getComputedStyle(element).textAlign);
+    string += lineFactory(true, "verticalAlign", window.getComputedStyle(element).verticalAlign);
+    string += lineFactory(true, "lineHeight", window.getComputedStyle(element).lineHeight);
+    string += lineFactory(true, "cssFloat", window.getComputedStyle(element).cssFloat);
+    string += lineFactory(true, "zIndex", window.getComputedStyle(element).zIndex);
     return string;
 }
 
-function lineFactory(title, value){
-    return "<span class='showCodeXTitle' style:''>title</span>: <span class='showCodeXValue' style:''>value";
+function lineFactory(newline, title, value){
+    var newlineChar = newline ? "<br>" : "";
+    return newlineChar+"<span class='showCodeXTitle' style:''>"+title+"</span>: <span class='showCodeXValue' style:''>"+value+"</span>";
 }
 
 function hideCode() {
@@ -142,7 +149,6 @@ function whiteListProcess(){
         whiteList.push(currentDomain);
         // Save it using the Chrome extension storage API.
         chrome.storage.sync.set({'whiteList': whiteList}, function() {
-            // Notify that we saved.
             message('Settings saved');
         });
     });
@@ -162,4 +168,8 @@ function setDisplayElementsStyle(span) {
     span.style.whiteSpace = "pre-wrap";
     span.style.wordBreak = "normal";
     span.style.zIndex = "9999";
+}
+
+function getLockHTML(){
+    return '<input type="checkbox" id="lock-switch" /><label id="lock-code" for="lock-switch" ></label> <style>#lock-code,#lock-switch{top:7px;right:21px;position:absolute}#lock-switch{height:0;width:0;visibility:hidden;display:inline}#lock-code{cursor:pointer;text-indent:-9999px;width:36px;height:18px;background:grey;display:inline-block;border-radius:18px}#lock-code:after{content:"";position:absolute;top:1px;left:1px;width:16px;height:16px;background:#fff;border-radius:16px;transition:.3s}#lock-switch:checked+#lock-code{background:#bada55}#lock-switch:checked+#lock-code:after{left:calc(100% - 1px);transform:translateX(-100%)}#lock-code:active:after{width:18px}</style>';
 }
