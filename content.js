@@ -74,7 +74,7 @@ function showCode(dom, x, y) {
 
             var container = document.getElementById("showcode-container");
             container.style.display = "grid";
-            container.style.gridTemplateColumns = "auto auto";
+            container.style.gridTemplateColumns = "50% 50%";
             container.gridgap = "2px";
 
             container.appendChild(savecodedom);
