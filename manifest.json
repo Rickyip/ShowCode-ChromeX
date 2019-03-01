@@ -37,6 +37,6 @@
         "<all_urls>",
         "storage",
         "contextMenus"
-    ],
+    ], 
     "short_name": "Show Code"
 }

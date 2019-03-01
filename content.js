@@ -6,22 +6,23 @@ var isActivated = true;
 
 (function () {
     makeDomElement();
+    // chrome.runtime.onMessage.addListener(
+    //     function(request, sender, sendResponse){
+    //         console.log(request);
+    //         alert();
+    //     }
+    // );
+
+    chrome.runtime.onConnect.addListener(function(port) {
+        console.log(port);
+    });
 })();
 
-var temp;
-chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse){
-        console.log(request);
-        temp="123";
-        alert();
-        sendResponse({"message":"received"});
-    }
-);
 
 
 if(isActivated){
     document.addEventListener('mouseover', function (e) {
-        console.log(temp);
+        // console.log(temp);
         var x = e.clientX, y = e.clientY;
         var elementMouseIsOver = document.elementFromPoint(x, y);
     
@@ -39,7 +40,7 @@ if(isActivated){
 }
 
 function makeDomElement() {
-    // TODO make the elements at start for panel mode
+    // TODO make the elements at start for panel mode 
     var container = document.createElement('span');
     container.id = "showcode-container";
     container.style.display = "inline-block";

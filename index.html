@@ -1,76 +1,6 @@
 <html>
   <head>
-    <style>                                                                                                                                    
-      input[type="checkbox"] {
-        height: 0;
-        width: 0;
-        visibility: hidden;
-        display: inline;
-      }
-
-      label {
-        cursor: pointer;
-        text-indent: -9999px;
-        width: 36px;
-        height: 18px;
-        background: grey;
-        display: inline-block;
-        border-radius: 18px;
-        position: relative;
-      }
-
-      label:after {
-        content: "";
-        position: absolute;
-        top: 1px;
-        left: 1px;
-        width: 16px;
-        height: 16px;
-        background: #fff;
-        border-radius: 16px;
-        transition: 0.3s;
-      }
-
-      input:checked + label {
-        background: #bada55;
-      }
-
-      input:checked + label:after {
-        left: calc(100% - 1px);
-        transform: translateX(-100%);
-      }
-
-      label:active:after {
-        width: 18px;
-      }
-
-      body {
-        width: 250px;
-        margin: 0;
-      }
-
-      #app {
-        width: 100%;
-        margin-top: 8px;
-        margin-right: 8px;
-        margin-bottom: 8px;
-        margin-left: 8px;
-        background-color: rgba(255, 255, 255, 0.8);
-      }
-      .row {
-        display: grid;
-        grid-template-columns: 120px 120px;
-        grid-gap: 0px;
-        margin-bottom: 2px;
-      }
-
-      .right {
-        text-align: right;
-      }
-      #darkmode {
-          display: inline-block;
-      }
-    </style>
+    <link rel="stylesheet" href="popup.css">
   </head>
   <body>
     <img src="show-code.png" style="max-width: 100%; max-height: 100%;" alt="https://app.bannersnack.com/banner-creator/my-banners/">
@@ -91,33 +21,5 @@
         <div class="row"><button type="button" onclick="onActivationClick(null)">Click Me!</button></div>
     </div>
   </body>
-  <script>
-    function onActivationClick(checkbox){
-      // chrome.extension.sendMessage({activated: true}, function (response) {
-      //   console.log("Clicked");
-      //   alert("");
-      // });
-
-
-      // Reference:
-      // https://stackoverflow.com/questions/40645538/communicate-data-from-popup-to-content-script-injected-by-popup-with-executescri/40666096
-
-
-
-      browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
-        console.log('CLICKED');
-      });
-      // console.log("onchange");
-      // chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
-      //   chrome.tabs.sendMessage(tabs[0].id, {"message": "g"}, function (response){
-      //     console.log(response);
-      //   });
-      // });
-      // var port = chrome.runtime.connect();
-      // port.postMessage("123");
-      // console.log("Clicked");
-      // chrome.runtime.sendMessage({"message": "g"});
-      
-    }
-  </script>
+  <script src="popup.js"></script>
 </html>
