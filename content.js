@@ -3,6 +3,7 @@ var timer;
 var tooltipMode = false;
 var darkmode = true;
 var isActivated = true;
+var lastDom;
 
 (function () {
     makeDomElement();
@@ -48,8 +49,9 @@ function makeDomElement() {
     if(!tooltipMode){
         container.style.overflowY= "scroll";
         container.style.backgroundColor= "black";
-        container.style.height = "218px";
+        container.style.height = "215px";
         container.style.width = "100%";
+        container.style.lineHeight = "11px";
     }
     
     var span = document.createElement('span');
@@ -78,7 +80,10 @@ function showCode(dom, x, y) {
             }
         }
     }
+    clearLastDomBorder(lastDom);
     displayDom.innerHTML = getBasicCSSText(dom);
+    lastDom=dom;
+    dom.style.border="1px dashed #0000FF";
     displayDom.style.display = "block";
 
     if(!tooltipMode){ 
@@ -109,6 +114,15 @@ function showCode(dom, x, y) {
 
         displayDom.style.top = '0px';
         displayDom.style.left = '0px';
+    }
+}
+
+function clearLastDomBorder(dom){
+    if(dom != null){
+        var borderStyle = dom.style.border;
+        if(borderStyle == "1px dashed #0000FF"){
+            borderStyle = "unset";
+        }
     }
 }
 
